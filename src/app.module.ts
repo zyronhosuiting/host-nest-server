@@ -13,6 +13,9 @@ import { Category } from './entities/category.entity';
 
 import { SeedModule } from './seed/seed.module';
 import { AuthModule } from './auth/auth.module';
+import { UploadModule } from './upload/upload.module';
+import { ListingsModule } from './listings/listings.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -44,6 +47,9 @@ import { AuthModule } from './auth/auth.module';
 
     SeedModule,
     AuthModule,
+    UploadModule,
+    ListingsModule,
+    CategoriesModule,
   ],
 })
 export class AppModule {}
