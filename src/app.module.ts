@@ -12,6 +12,7 @@ import { SchoolNet } from './entities/school-net.entity';
 import { Category } from './entities/category.entity';
 
 import { SeedModule } from './seed/seed.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { SeedModule } from './seed/seed.module';
     }),
 
     SeedModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
