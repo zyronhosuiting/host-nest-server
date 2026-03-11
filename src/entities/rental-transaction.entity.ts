@@ -14,8 +14,8 @@ export class RentalTransaction {
   @Column()
   building: string;
 
-  @Column()
-  categories: string; // space-separated cat keys, e.g. 'estate'
+  @Column({ type: 'text', array: true, default: '{}' })
+  categories: string[]; // e.g. ['estate']
 
   @Column()
   unitType: string; // e.g. '2房1廁'

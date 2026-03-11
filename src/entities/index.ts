@@ -1,6 +1,5 @@
 export { User } from './user.entity';
 export { Listing } from './listing.entity';
-export { ListingExtra } from './listing-extra.entity';
 export { Favorite } from './favorite.entity';
 export { Conversation } from './conversation.entity';
 export { Message } from './message.entity';

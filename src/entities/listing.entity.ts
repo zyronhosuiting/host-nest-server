@@ -2,12 +2,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ListingExtra } from './listing-extra.entity';
 import { Favorite } from './favorite.entity';
 
 @Entity('listings')
@@ -18,8 +16,8 @@ export class Listing {
   @Column()
   name: string;
 
-  @Column()
-  categories: string; // space-separated category keys, e.g. 'all estate'
+  @Column({ type: 'text', array: true, default: '{}' })
+  categories: string[]; // e.g. ['all', 'estate']
 
   @Column()
   location: string; // e.g. '太古城，東區'
@@ -35,9 +33,6 @@ export class Listing {
 
   @Column({ default: '' })
   badge: string; // e.g. '業主直租', '新上架'
-
-  @Column({ default: '' })
-  badgeModifier: string; // CSS modifier class, e.g. 'card-badge--new'
 
   @Column()
   subtitle: string; // e.g. '私人屋苑 · 2房1廁 · 即租'
@@ -60,26 +55,50 @@ export class Listing {
   @Column({ type: 'int', default: 0 })
   reviews: number;
 
-  @Column({ type: 'int', default: 3 })
-  photoCount: number; // number of carousel dots
-
-  @Column({ default: '#5c6bc0' })
-  color: string; // placeholder card color
-
   @Column({ type: 'text', array: true, default: '{}' })
   photos: string[];
 
   @Column({ type: 'int', nullable: true })
   coverIndex: number;
 
+  // ── Detail fields (merged from ListingExtra) ──
+
+  @Column({ type: 'int', default: 0 })
+  area: number; // in square feet
+
+  @Column({ type: 'int', default: 0 })
+  bedrooms: number;
+
+  @Column({ type: 'int', default: 1 })
+  bathrooms: number;
+
+  @Column({ type: 'text', default: '' })
+  description: string;
+
+  @Column({ type: 'text', array: true, default: '{}' })
+  features: string[]; // e.g. ['業主直租 — 免佣金', ...]
+
+  @Column({ nullable: true })
+  propertyType: string; // e.g. '私人屋苑'
+
+  @Column({ nullable: true })
+  leaseTerm: string; // e.g. '12個月'
+
+  @Column({ nullable: true })
+  ownerPhone: string;
+
+  @Column({ type: 'text', array: true, default: '{}' })
+  amenities: string[]; // e.g. ['elevator', 'security', 'gym']
+
+  // ── Timestamps ──
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt_: Date;
+  updatedAt: Date;
 
-  @OneToOne(() => ListingExtra, (extra) => extra.listing, { cascade: true })
-  extra: ListingExtra;
+  // ── Relations ──
 
   @OneToMany(() => Favorite, (fav) => fav.listing)
   favorites: Favorite[];

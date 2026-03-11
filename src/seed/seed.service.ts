@@ -3,14 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Listing } from '../entities/listing.entity';
-import { ListingExtra } from '../entities/listing-extra.entity';
 import { Category } from '../entities/category.entity';
 import { SchoolNet } from '../entities/school-net.entity';
 import { RentalTransaction } from '../entities/rental-transaction.entity';
 
 import {
   SEED_LISTINGS,
-  SEED_LISTING_EXTRAS,
   SEED_CATEGORIES,
   SEED_SCHOOL_NETS,
   SEED_RENTAL_TRANSACTIONS,
@@ -23,8 +21,6 @@ export class SeedService implements OnModuleInit {
   constructor(
     @InjectRepository(Listing)
     private readonly listingRepo: Repository<Listing>,
-    @InjectRepository(ListingExtra)
-    private readonly listingExtraRepo: Repository<ListingExtra>,
     @InjectRepository(Category)
     private readonly categoryRepo: Repository<Category>,
     @InjectRepository(SchoolNet)
@@ -59,24 +55,17 @@ export class SeedService implements OnModuleInit {
     }
     this.logger.log(`Seeded ${SEED_SCHOOL_NETS.length} school nets`);
 
-    // Listings
+    // Listings (with detail fields merged in)
     for (const data of SEED_LISTINGS) {
-      const listing = this.listingRepo.create(data);
-      await this.listingRepo.save(listing);
+      await this.listingRepo.save(this.listingRepo.create(data));
     }
     this.logger.log(`Seeded ${SEED_LISTINGS.length} listings`);
 
-    // Listing extras
-    for (const data of SEED_LISTING_EXTRAS) {
-      const extra = this.listingExtraRepo.create(data);
-      await this.listingExtraRepo.save(extra);
-    }
-    this.logger.log(`Seeded ${SEED_LISTING_EXTRAS.length} listing extras`);
-
     // Rental transactions
     for (const data of SEED_RENTAL_TRANSACTIONS) {
-      const tx = this.rentalTransactionRepo.create(data);
-      await this.rentalTransactionRepo.save(tx);
+      await this.rentalTransactionRepo.save(
+        this.rentalTransactionRepo.create(data),
+      );
     }
     this.logger.log(`Seeded ${SEED_RENTAL_TRANSACTIONS.length} rental transactions`);
 

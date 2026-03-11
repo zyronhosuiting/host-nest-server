@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { User } from './entities/user.entity';
 import { Listing } from './entities/listing.entity';
-import { ListingExtra } from './entities/listing-extra.entity';
 import { Favorite } from './entities/favorite.entity';
 import { Conversation } from './entities/conversation.entity';
 import { Message } from './entities/message.entity';
@@ -30,7 +29,6 @@ import { SeedModule } from './seed/seed.module';
         entities: [
           User,
           Listing,
-          ListingExtra,
           Favorite,
           Conversation,
           Message,
