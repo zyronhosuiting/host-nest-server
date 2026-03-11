@@ -16,6 +16,9 @@ import { AuthModule } from './auth/auth.module';
 import { UploadModule } from './upload/upload.module';
 import { ListingsModule } from './listings/listings.module';
 import { CategoriesModule } from './categories/categories.module';
+import { FavoritesModule } from './favorites/favorites.module';
+import { MessagesModule } from './messages/messages.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -50,6 +53,9 @@ import { CategoriesModule } from './categories/categories.module';
     UploadModule,
     ListingsModule,
     CategoriesModule,
+    FavoritesModule,
+    MessagesModule,
+    ProfileModule,
   ],
 })
 export class AppModule {}
