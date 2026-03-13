@@ -19,6 +19,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { MessagesModule } from './messages/messages.module';
 import { ProfileModule } from './profile/profile.module';
+import { ReferenceDataModule } from './reference-data/reference-data.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { ProfileModule } from './profile/profile.module';
     FavoritesModule,
     MessagesModule,
     ProfileModule,
+    ReferenceDataModule,
   ],
 })
 export class AppModule {}
