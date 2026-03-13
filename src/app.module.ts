@@ -27,26 +27,40 @@ import { ReferenceDataModule } from './reference-data/reference-data.module';
 
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'postgres',
-        host: config.get('DB_HOST', 'localhost'),
-        port: config.get<number>('DB_PORT', 5432),
-        username: config.get('DB_USERNAME', 'postgres'),
-        password: config.get('DB_PASSWORD', 'postgres'),
-        database: config.get('DB_DATABASE', 'host_living'),
-        entities: [
-          User,
-          Listing,
-          Favorite,
-          Conversation,
-          Message,
-          RentalTransaction,
-          SchoolNet,
-          Category,
-        ],
-        synchronize: true, // Auto-sync schema in development (disable in production)
-        logging: false,
-      }),
+      useFactory: (config: ConfigService) => {
+        const databaseUrl = config.get<string>('DATABASE_URL');
+
+        // Railway / production: use DATABASE_URL connection string
+        if (databaseUrl) {
+          return {
+            type: 'postgres' as const,
+            url: databaseUrl,
+            entities: [
+              User, Listing, Favorite, Conversation, Message,
+              RentalTransaction, SchoolNet, Category,
+            ],
+            ssl: { rejectUnauthorized: false },
+            synchronize: true,
+            logging: false,
+          };
+        }
+
+        // Local development: use individual env vars
+        return {
+          type: 'postgres' as const,
+          host: config.get<string>('DB_HOST', 'localhost'),
+          port: config.get<number>('DB_PORT', 5432),
+          username: config.get<string>('DB_USERNAME', 'postgres'),
+          password: config.get<string>('DB_PASSWORD', 'postgres'),
+          database: config.get<string>('DB_DATABASE', 'host_living'),
+          entities: [
+            User, Listing, Favorite, Conversation, Message,
+            RentalTransaction, SchoolNet, Category,
+          ],
+          synchronize: true,
+          logging: false,
+        };
+      },
     }),
 
     SeedModule,
