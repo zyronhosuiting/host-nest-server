@@ -5,7 +5,7 @@ import {
   PutObjectCommand,
   DeleteObjectCommand,
 } from '@aws-sdk/client-s3';
-import { v4 as uuid } from 'uuid';
+import { randomUUID } from 'crypto';
 import * as path from 'path';
 
 @Injectable()
@@ -41,7 +41,7 @@ export class UploadService {
     folder = 'uploads',
   ): Promise<string> {
     const ext = path.extname(file.originalname) || '.jpg';
-    const key = `${folder}/${uuid()}${ext}`;
+    const key = `${folder}/${randomUUID()}${ext}`;
 
     await this.s3.send(
       new PutObjectCommand({
